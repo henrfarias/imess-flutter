@@ -103,4 +103,11 @@ class AuthProvider extends GetConnect implements GetxService {
     return isLoggedIn &&
         GetStorage().read(FirestoreConstants.id)?.isNotEmpty == true;
   }
+
+  Future<void> googleSignOut() async {
+    authController.changeStatus(Status.pending);
+    await authController.firebaseAuth.signOut();
+    await authController.googleSignIn.disconnect();
+    await authController.googleSignIn.signOut();
+  }
 }
