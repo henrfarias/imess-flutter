@@ -144,13 +144,15 @@ class HomeView extends GetView<HomeController> {
             if (KeyboardUtils.isKeyboardShowing(context)) {
               KeyboardUtils.closeKeyboard(context);
             }
-            var params = <String, String>{
+            var args = <String, String>{
               "peerId": contact.id,
               "peerAvatar": contact.photoUrl,
               "peerNickname": contact.displayName,
               "userAvatar": firebaseAuth.currentUser!.photoURL!
             };
-            Get.toNamed(Routes.CHAT, parameters: params);
+            print('Into Home screen');
+            print(args);
+            Get.toNamed(Routes.CHAT, arguments: args);
           },
           child: ListTile(
             leading: contact.photoUrl.isNotEmpty
