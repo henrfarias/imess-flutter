@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:lottie/lottie.dart';
 import 'package:get/get.dart';
 
 import '../controllers/splash_controller.dart';
@@ -13,9 +13,14 @@ class SplashView extends GetView<SplashController> {
           child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Image.asset('assets/images/splash.png', width: 300, height: 300),
           const Text("Bem vindo ao IMess",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: Colors.deepPurple,
+                  fontStyle: FontStyle.italic)),
+          Lottie.asset('assets/animations/splash-animation.json',
+              width: 300, height: 300),
         ],
       )),
     );

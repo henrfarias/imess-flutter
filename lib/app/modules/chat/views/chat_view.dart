@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 
 import 'package:get/get.dart';
 import 'package:imess/app/data/classes/chat_message.dart';
@@ -267,8 +268,13 @@ Widget buildListMessage() {
                         itemBuilder: (context, index) =>
                             buildItem(index, snapshot.data?.docs[index]));
                   } else {
-                    return const Center(
-                      child: Text('Não existem mensagens...'),
+                    return Center(
+                      child: Column(
+                        children: [
+                          Lottie.asset('assets/animations/not-found-animation.json', width: 300, height: 300),
+                          const Text('Não existem mensagens...'),
+                        ],
+                      )
                     );
                   }
                 } else {
