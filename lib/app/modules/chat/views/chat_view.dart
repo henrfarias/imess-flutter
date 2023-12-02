@@ -271,7 +271,7 @@ Widget buildListMessage() {
                     return Center(
                       child: Column(
                         children: [
-                          Lottie.asset('assets/animations/not-found-animation.json', width: 300, height: 300),
+                          Lottie.asset('assets/animations/not-found-animation.json', width: 200, height: 200),
                           const Text('Não existem mensagens...'),
                         ],
                       )
