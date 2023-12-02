@@ -11,12 +11,12 @@ import 'package:imess/app/routes/app_pages.dart';
 class HomeController extends GetxController {
   final AuthProvider authProvider = Get.find<AuthProvider>();
   final ScrollController scrollController = ScrollController();
-  final ConversationsProvider conversationsProvider = Get.find<ConversationsProvider>();
+  final ConversationsProvider conversationsProvider =
+      Get.find<ConversationsProvider>();
   final int _limitIncrement = 20;
   late String currentUserId;
 
   final Rx<int> _limit = 20.obs;
-  final Rx<String> _textSearch = "".obs;
   final Rx<bool> _isLoading = false.obs;
 
   Debouncer searchDebouncer =
@@ -28,9 +28,6 @@ class HomeController extends GetxController {
 
   get limit => _limit.value;
   increaseLimit(int value) => _limit.value += value;
-
-  get textSearch => _textSearch.value;
-  changeSearchText(String value) => _textSearch.value = value;
 
   Future<void> googleSignOut() async {
     authProvider.googleSignOut();

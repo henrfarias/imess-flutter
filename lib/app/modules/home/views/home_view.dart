@@ -37,13 +37,15 @@ class HomeView extends GetView<HomeController> {
             children: [
               Column(
                 children: [
-                  buildSearchBar(),
+                  const Text(
+                    'Contatos',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
                   Expanded(
                       child: StreamBuilder<QuerySnapshot>(
                     stream: controller.conversationsProvider.getFirestoreData(
                         FirestoreConstants.pathUserCollection,
-                        controller.limit,
-                        controller.textSearch),
+                        controller.limit),
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.hasData) {
@@ -81,56 +83,6 @@ class HomeView extends GetView<HomeController> {
         ));
   }
 
-  Widget buildSearchBar() {
-    return Container(
-        margin: const EdgeInsets.all(10),
-        height: 50,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
-          color: Colors.black12,
-        ),
-        child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-          const SizedBox(
-            width: 10,
-          ),
-          const Icon(Icons.person_search, color: Colors.white, size: 20),
-          const SizedBox(width: 10),
-          Expanded(
-            child: TextFormField(
-                decoration: const InputDecoration.collapsed(
-                    hintText: 'Pesquise aqui...',
-                    hintStyle: TextStyle(color: Colors.white)),
-                textInputAction: TextInputAction.search,
-                controller: controller.searchTextEditingController,
-                onChanged: (value) {
-                  if (value.isNotEmpty) {
-                    controller.buttonClearController.add(true);
-                    controller.changeSearchText(value);
-                  } else {
-                    controller.buttonClearController.add(false);
-                    controller.changeSearchText("");
-                  }
-                }),
-          ),
-          StreamBuilder(
-              stream: controller.buttonClearController.stream,
-              builder: (context, snapshot) {
-                return snapshot.data == true
-                    ? GestureDetector(
-                        onTap: () {
-                          controller.searchTextEditingController.clear();
-                          controller.buttonClearController.add(false);
-                          controller.changeSearchText("");
-                        },
-                        child: const Icon(Icons.clear_rounded,
-                            color: Colors.grey, size: 20),
-                      )
-                    : const SizedBox.shrink();
-              }),
-          const SizedBox(width: 20),
-        ]));
-  }
-
   Widget buildItem(BuildContext context, DocumentSnapshot? documentSnapshot) {
     final FirebaseAuth firebaseAuth =
         controller.authProvider.authController.firebaseAuth;
@@ -150,8 +102,6 @@ class HomeView extends GetView<HomeController> {
               "peerNickname": contact.displayName,
               "userAvatar": firebaseAuth.currentUser!.photoURL!
             };
-            print('Into Home screen');
-            print(args);
             Get.toNamed(Routes.CHAT, arguments: args);
           },
           child: ListTile(
