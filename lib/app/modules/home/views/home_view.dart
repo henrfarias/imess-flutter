@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:imess/app/data/classes/talk_contact.dart';
 import 'package:imess/app/modules/global/constants/firestore_constants.dart';
 import 'package:imess/app/modules/loading/views/loading_view.dart';
@@ -100,7 +101,8 @@ class HomeView extends GetView<HomeController> {
               "peerId": contact.id,
               "peerAvatar": contact.photoUrl,
               "peerNickname": contact.displayName,
-              "userAvatar": firebaseAuth.currentUser!.photoURL!
+              "userAvatar": GetStorage().read(FirestoreConstants.photoUrl) ??
+                  firebaseAuth.currentUser!.photoURL!
             };
             Get.toNamed(Routes.CHAT, arguments: args);
           },
