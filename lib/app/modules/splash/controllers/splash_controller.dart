@@ -7,7 +7,6 @@ class SplashController extends GetxController {
 
   @override
   void onInit() {
-    print('Init splash controller');
     super.onInit();
     Future.delayed(const Duration(seconds: 5), () async {
       if(await authProvider.isLoggedIn()) {

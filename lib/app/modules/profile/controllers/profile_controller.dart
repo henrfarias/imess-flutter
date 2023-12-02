@@ -11,9 +11,8 @@ import 'package:imess/app/providers/profile_provider.dart';
 class ProfileController extends GetxController {
   TextEditingController? displayNameController;
   TextEditingController? aboutMeController;
-  final TextEditingController _phoneController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
   final ProfileProvider profileProvider = Get.find<ProfileProvider>();
-  get phoneController => _phoneController;
   late String currentUserId;
   Rx<String> dialCodeDigits = '+55'.obs;
   setDialCodeDigits(String value) => dialCodeDigits.value = value;
@@ -21,7 +20,7 @@ class ProfileController extends GetxController {
   String displayName = '';
   Rx<String> photoUrl = ''.obs;
   Rx<String> phoneNumber = ''.obs;
-  String aboutMe = '';
+  Rx<String> aboutMe = ''.obs;
 
   final Rx<bool> _isLoading = false.obs;
   setIsLoading(bool value) => _isLoading.value = value;
@@ -41,11 +40,12 @@ class ProfileController extends GetxController {
     photoUrl.value = profileProvider.getData(FirestoreConstants.photoUrl) ?? '';
     phoneNumber.value =
         profileProvider.getData(FirestoreConstants.phoneNumber) ?? '';
-    aboutMe = profileProvider.getData(FirestoreConstants.aboutMe) ?? '';
+    aboutMe.value = profileProvider.getData(FirestoreConstants.aboutMe) ?? '';
     displayName = profileProvider.getData(FirestoreConstants.displayName) ?? '';
 
     displayNameController = TextEditingController(text: displayName);
-    aboutMeController = TextEditingController(text: aboutMe);
+    aboutMeController = TextEditingController(text: aboutMe.value);
+    phoneController = TextEditingController(text: phoneNumber.value.substring(3));
   }
 
   Future getImage() async {
@@ -84,7 +84,7 @@ class ProfileController extends GetxController {
         photoUrl: photoUrl.value,
         displayName: displayName,
         phoneNumber: phoneNumber.value,
-        aboutMe: aboutMe,
+        aboutMe: aboutMe.value,
       );
       profileProvider
           .updateFirestoreData(
@@ -107,15 +107,15 @@ class ProfileController extends GetxController {
   void updateFirestoreData() {
     focusNodeNickname.unfocus();
     setIsLoading(true);
-    if (_phoneController.text != "") {
-      phoneNumber.value = dialCodeDigits + _phoneController.text.toString();
+    if (phoneController.text != "") {
+      phoneNumber.value = dialCodeDigits + phoneController.text.toString();
     }
     TalkContact updateInfo = TalkContact(
         id: id,
         photoUrl: photoUrl.value,
         displayName: displayName,
         phoneNumber: phoneNumber.value,
-        aboutMe: aboutMe);
+        aboutMe: aboutMe.value);
     profileProvider
         .updateFirestoreData(
             FirestoreConstants.pathUserCollection, id, updateInfo.toJson())
@@ -125,7 +125,7 @@ class ProfileController extends GetxController {
       await profileProvider.setData(
           FirestoreConstants.phoneNumber, phoneNumber.value);
       await profileProvider.setData(FirestoreConstants.photoUrl, photoUrl.value);
-      await profileProvider.setData(FirestoreConstants.aboutMe, aboutMe);
+      await profileProvider.setData(FirestoreConstants.aboutMe, aboutMe.value);
       setIsLoading(false);
 
       Get.showSnackbar(const GetSnackBar(

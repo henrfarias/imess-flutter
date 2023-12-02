@@ -113,8 +113,9 @@ class ProfileView extends GetView<ProfileController> {
                               labelStyle: TextStyle(color: Colors.indigoAccent),
                               hintText: 'Escreva sobre você...'),
                           onChanged: (value) {
-                            controller.aboutMe = value;
+                            controller.aboutMe.value = value;
                           },
+                          controller: controller.aboutMeController,
                         ),
                         const SizedBox(height: 30),
                         const Text(
